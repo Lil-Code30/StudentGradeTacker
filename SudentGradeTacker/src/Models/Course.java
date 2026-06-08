@@ -11,13 +11,14 @@ public class Course {
     private int credit;
     private String name;
     private String description = "";
-    public static ArrayList<Student> students =  new ArrayList<>();
+    private ArrayList<Student> students;
 
     public Course(String code, String name, int credit){
         this.courseId = IdGenerator(name, 5);
         this.courseCode = code;
         this.credit = credit;
         setName(name);
+        this.students = new ArrayList<Student>();
 
     }
 
@@ -36,6 +37,7 @@ public class Course {
         System.out.printf("| %-15s | %-28s |\n", "Course ID", courseId);
         System.out.printf("| %-15s | %-28s |\n", "Course Code", courseCode);
         System.out.printf("| %-15s | %-28s |\n", "Name", name);
+        System.out.printf("| %-15s | %-28s |\n", "Credit", credit);
         System.out.printf("| %-15s | %-28s |\n", "Description", description);
         System.out.printf("| %-15s | %-28d |\n", "Students", students.size());
         System.out.println("+--------------------------------------------------+");
@@ -69,5 +71,9 @@ public class Course {
     }
     public int getCredit(){
         return credit;
+    }
+
+    public ArrayList<Student> getStudents(){
+        return students;
     }
 }

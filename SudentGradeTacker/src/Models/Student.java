@@ -16,8 +16,8 @@ public class Student {
 
     public void DisplayStudent(){
         System.out.println("==============================");
-        System.out.print("StudentId: " + studentId);
-        System.out.print("Name: " + name);
+        System.out.println("StudentId: " + studentId);
+        System.out.println("Name: " + name);
         System.out.println("------------------------------\n");
         System.out.print("Courses: ");
 
@@ -40,5 +40,8 @@ public class Student {
 
     public String getStudentId(){
         return studentId;
+    }
+    public ArrayList<Course> getCourses(){
+        return courses;
     }
 }
