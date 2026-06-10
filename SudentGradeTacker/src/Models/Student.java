@@ -9,7 +9,7 @@ public class Student {
     private ArrayList<Course> courses;
 
     public Student(String name){
-        this.studentId = IdGenerator(name, 10);
+        this.studentId = IdGenerator(name, 3);
         setName(name);
         this.courses = new ArrayList<Course>();
     }
@@ -17,13 +17,18 @@ public class Student {
     public void DisplayStudent(){
         System.out.println("==============================");
         System.out.println("StudentId: " + studentId);
-        System.out.println("Name: " + name);
+        System.out.println("Name: " + this.name);
         System.out.println("------------------------------\n");
         System.out.print("Courses: ");
 
-        for(Course course: courses){
-            System.out.print(course.getName() + ", ");
+        if(!courses.isEmpty()){
+            for(Course course: courses){
+                System.out.print(course.getName() + ", ");
+            }
+        }else{
+            System.out.println("The current student has no course registered.");
         }
+
         System.out.println("==============================");
     }
 

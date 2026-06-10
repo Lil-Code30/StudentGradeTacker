@@ -56,24 +56,12 @@ public class Manager {
         }
     }
 
-    public void findStudentById(String studentId){
-        Optional<Student> studentFound = students.stream().filter(st -> st.getStudentId().equals(studentId)).findFirst();
-
-        if(studentFound.isPresent()){
-            studentFound.get().DisplayStudent();
-        }else{
-            System.out.println("404 Student not found");
-        }
+    public Optional<Student> findStudentById(String studentId){
+        return students.stream().filter(st -> st.getStudentId().equals(studentId)).findFirst();
     }
 
-    public void findCourseByCode(String courseId){
-        Optional<Course> courseFound = courses.stream().filter(course -> course.getCourseId().equals(courseId)).findFirst();
-
-        if(courseFound.isPresent()){
-            courseFound.get().DisplayCourse();
-        }else{
-            System.out.println("404 Course not found.");
-        }
+    public Optional<Course>  findCourseById(String courseId){
+        return courses.stream().filter(course -> course.getCourseId().equals(courseId)).findFirst();
     }
 
     public void displayAllCourses() {

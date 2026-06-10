@@ -1,96 +1,133 @@
 import Models.*;
+import Utils.Manager;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args){
 
+        Scanner input = new Scanner(System.in);
+        boolean isRunning = true;
 
-        // Creating courses
-        Course javaProgramming = new Course(
-                "JAV101",
-                "Introduction to Java Programming",
-                3
-        );
+        // create the manager to manage the app
+        Manager manager = new Manager();
 
-        Course webDevelopment = new Course(
-                "WEB201",
-                "Web Development Fundamentals",
-                4
-        );
+        do{
+            DisplayMenu();
+            System.out.print("Enter your choice: ");
+            String userInput = input.nextLine();
 
-        Course databaseSystems = new Course(
-                "DBS301",
-                "Database Systems",
-                3
-        );
+            switch(userInput){
+                case "1":
+                    System.out.print("Enter the Student name (The name must be more than 5 characters): ");
+                    String studentName = input.nextLine();
 
-        Course dataStructures = new Course(
-                "CST202",
-                "Data Structures and Algorithms",
-                4
-        );
+                    Student newStudent = new Student(studentName);
+                    manager.addStudent(newStudent);
+                    newStudent.DisplayStudent();
+                    System.out.println("Please Store your StudentId, it will be useful later.");
+                    break;
 
-        Course softwareEngineering = new Course(
-                "SWE401",
-                "Software Engineering",
-                3
-        );
+                case "2":
+                    System.out.print("Enter the Course code (Example; CS102, Math2000,...): ");
+                    String courseCode = input.nextLine();
 
-        // Students' Data
-        Student student1 = new Student("John Smith");
-        Student student2 = new Student("Emma Johnson");
-        Student student3 = new Student("Michael Brown");
-        Student student4 = new Student("Sophia Davis");
-        Student student5 = new Student("William Wilson");
-        Student student6 = new Student("Olivia Taylor");
-        Student student7 = new Student("James Anderson");
-        Student student8 = new Student("Ava Martinez");
-        Student student9 = new Student("Benjamin Thomas");
-        Student student10 = new Student("Charlotte Moore");
+                    System.out.print("Enter the name of the course (The name must be more than 5 characters): ");
+                    String courseName = input.nextLine();
 
-        // setting courses description
-        javaProgramming.setDescription(
-                "Introduction to object-oriented programming using Java."
-        );
+                    System.out.print("Enter the number of credit for this course: ");
+                    int courseCredit = input.nextInt();
 
-        webDevelopment.setDescription(
-                "Learn HTML, CSS, JavaScript and responsive web design."
-        );
+                    Course newCourse = new Course(courseCode, courseName, courseCredit);
+                    manager.addCourse(newCourse);
 
-        databaseSystems.setDescription(
-                "Design and implementation of relational databases using SQL."
-        );
+                    newCourse.DisplayCourse();
+                    break;
 
-        dataStructures.setDescription(
-                "Study of arrays, linked lists, stacks, queues, trees and graphs."
-        );
+                case "3":
+                    if(manager.getStudents().isEmpty()){
+                        System.out.println("No Student Found. Please Create Students (at option 1) before using this option.");
+                        break;
+                    }
 
-        softwareEngineering.setDescription(
-                "Software development lifecycle, design patterns and team collaboration."
-        );
+                    manager.displayAllStudents();
+                    System.out.println("______________________________________________");
 
-        // Registering students to courses
+                    System.out.print("Enter the StudentId: ");
+                    String studentId = input.nextLine();
 
-        javaProgramming.RegisterStudent(student1);
-        javaProgramming.RegisterStudent(student2);
-        javaProgramming.RegisterStudent(student3);
+                   if( manager.findStudentById(studentId).isPresent()){
+                       if(manager.getCourses().isEmpty()){
+                           System.out.println("No Courses Found. Please Create courses (at option 2) before using this option");
+                           break;
+                       }
+                       manager.displayAllCourses();
 
-        webDevelopment.RegisterStudent(student2);
-        webDevelopment.RegisterStudent(student4);
-        webDevelopment.RegisterStudent(student5);
+                       String id = "";
 
-        databaseSystems.RegisterStudent(student1);
-        databaseSystems.RegisterStudent(student6);
-        databaseSystems.RegisterStudent(student7);
+                       do{
+                           System.out.print("Enter the course Id: ");
+                           id = input.nextLine();
 
-        dataStructures.RegisterStudent(student3);
-        dataStructures.RegisterStudent(student8);
-        dataStructures.RegisterStudent(student9);
+                       }while(manager.findCourseById(id).isEmpty());
 
-        softwareEngineering.RegisterStudent(student5);
-        softwareEngineering.RegisterStudent(student7);
-        softwareEngineering.RegisterStudent(student10);
+                       Course targetCourse = manager.findCourseById(id).get();
 
-        dataStructures.DisplayCourse();
-        student9.DisplayStudent();
+                       targetCourse.RegisterStudent(manager.findStudentById(studentId).get());
+
+                       System.out.println("Student successfully registered to the course " + targetCourse.getName());
+
+                   }else{
+                       System.out.println("Student doesn't exist in app.");
+                   }
+                    break;
+
+                case "4":
+                case "5":
+                case "6":
+                    System.out.println("This option is not yet implemented");
+                    break;
+
+                case "7":
+                    if(manager.getStudents().isEmpty()){
+                        System.out.println("0 Student Found");
+                    }else{
+                        manager.displayAllStudents();
+                    }
+                    break;
+
+                case "8":
+                    if(manager.getCourses().isEmpty()){
+                       System.out.println("0 Course Found");
+                    }else{
+                        manager.displayAllCourses();
+                    }
+                    break;
+
+                case "0":
+                    isRunning = false;
+                    System.out.println("Thanks for using the app, see you next time. Bye!!!");
+                    break;
+                default:
+                    System.out.println("The option entered is not valid, please try again.");
+            }
+
+        }while(isRunning);
+    }
+
+    public static void DisplayMenu(){
+        System.out.println("\n=================================");
+        System.out.println("    STUDENT GRADE TRACKER");
+        System.out.println("=================================");
+        System.out.println("1. Add Student");
+        System.out.println("2. Add Course");
+        System.out.println("3. Register a student to a course");
+        System.out.println("4. Add Grade");
+        System.out.println("5. Calculate Average");
+        System.out.println("6. View Student Report");
+        System.out.println("7. Display All Students");
+        System.out.println("8. Display All Courses");
+        System.out.println("0. Exit");
+        System.out.println("=================================");
     }
 }
